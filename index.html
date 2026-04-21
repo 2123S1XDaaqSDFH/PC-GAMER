@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC GAMER BUENOS AIRES | Los Mejores Computadores En Antioquia</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+            --neon-red: #ff0055;
+            --bg-dark: #020205;
+        }
+
+        * { cursor: none !important; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-gamer { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- BIOS LOADER --- */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; padding: 10%;
+            font-family: 'Courier New', Courier, monospace; color: #0f0;
+        }
+
+        /* --- CURSOR GAMER --- */
+        #cursor {
+            width: 15px; height: 15px; border: 2px solid var(--neon-blue);
+            position: fixed; pointer-events: none; z-index: 10000;
+            transform: rotate(45deg); transition: transform 0.1s;
+        }
+
+        /* --- ESTÉTICA CYBER --- */
+        .neon-text {
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+        }
+
+        .cyber-card {
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 10% 100%, 0 90%);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .cyber-card::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 2px; background: var(--neon-blue);
+            animation: scan-line 3s infinite;
+        }
+
+        @keyframes scan-line {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .btn-gamer {
+            background: transparent;
+            border: 1px solid var(--neon-purple);
+            padding: 15px 40px;
+            color: #white;
+            position: relative;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            transition: 0.3s;
+        }
+
+        .btn-gamer:hover {
+            background: var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div id="log-container"></div>
+        <div class="mt-10 h-1 bg-gray-900 w-64"><div id="boot-progress" class="h-full bg-green-500 w-0"></div></div>
+    </div>
+
+    <div id="cursor"></div>
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="fixed w-full z-[500] py-6 px-10 border-b border-white/5 bg-black/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-3xl font-black font-gamer text-white tracking-tighter">
+                GAMER<span class="text-[--neon-blue]">HUB</span>
+            </div>
+            
+            <div class="hidden lg:flex space-x-12 items-center text-sm font-bold uppercase tracking-widest">
+                <a href="#builds" class="hover:text-[--neon-blue] transition">PC Builds</a>
+                <a href="#componentes" class="hover:text-[--neon-blue] transition">Hardware</a>
+                <a href="#perifericos" class="hover:text-[--neon-blue] transition">Setup</a>
+                <a href="https://wa.me/573184499437" class="btn-gamer">Configurar</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex flex-col justify-center items-center relative text-center px-6 pt-20">
+        <div class="z-10">
+            <h2 class="text-[--neon-blue] font-gamer text-xl mb-6 tracking-[10px] animate-pulse">Maximo Rendimiento</h2>
+            <h1 class="text-6xl md:text-[9vw] font-black leading-none mb-10 font-gamer" id="hero-title">
+                DOMINA EL <br> <span class="neon-text">MULTIVERSO.</span>
+            </h1>
+            <p class="text-gray-400 text-xl md:text-2xl max-w-3xl mx-auto mb-16 font-light">
+                Armamos máquinas de guerra digital con los componentes más potentes del mercado. FPS estables, latencia cero.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-8">
+                <a href="https://wa.me/573184499437" class="btn-gamer bg-white/10">Armar mi PC</a>
+                <a href="#builds" class="px-10 py-4 flex items-center gap-4 hover:text-[--neon-blue] transition uppercase font-bold tracking-widest">
+                    Explora Nuestras Maquinas <i class="fa-solid fa-bolt"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="builds" class="py-32 container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            
+            <div class="cyber-card p-10 group">
+                <div class="text-xs text-[--neon-blue] mb-4">01 // PRO</div>
+                <h3 class="text-3xl font-gamer mb-6 group-hover:text-[--neon-blue] transition">Legendary Series</h3>
+                <p class="text-gray-500 mb-8">RTX 4090 + Ryzen 9 7950X3D. Diseñada para ganar torneos.</p>
+                <div class="border-t border-white/10 pt-6 flex justify-between items-center">
+                    <span class="text-xs tracking-widest opacity-50 uppercase">Ultra High End</span>
+                    <i class="fa-solid fa-microchip text-2xl opacity-20"></i>
+                </div>
+            </div>
+
+            <div class="cyber-card p-10 group border-purple-500/20">
+                <div class="text-xs text-[--neon-purple] mb-4">02 // STREAMING</div>
+                <h3 class="text-3xl font-gamer mb-6 group-hover:text-[--neon-purple] transition">Creator Pro</h3>
+                <p class="text-gray-500 mb-8">RTX 4080 Ti + Core i7. Multitarea sin límites para tus streams.</p>
+                <div class="border-t border-white/10 pt-6 flex justify-between items-center">
+                    <span class="text-xs tracking-widest opacity-50 uppercase">Multicore King</span>
+                    <i class="fa-solid fa-video text-2xl opacity-20"></i>
+                </div>
+            </div>
+
+            <div class="cyber-card p-10 group">
+                <div class="text-xs text-[--neon-red] mb-4">03 // ENTRY LEVEL</div>
+                <h3 class="text-3xl font-gamer mb-6 group-hover:text-[--neon-red] transition">Fast & Furious</h3>
+                <p class="text-gray-500 mb-8">RTX 4060 TI + Core i5. 1080p competitivo al mejor precio.</p>
+                <div class="border-t border-white/10 pt-6 flex justify-between items-center">
+                    <span class="text-xs tracking-widest opacity-50 uppercase">Value Choice</span>
+                    <i class="fa-solid fa-gamepad text-2xl opacity-20"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="py-20 bg-black border-t-2 border-[--neon-blue]/20">
+        <div class="container mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="font-gamer text-2xl">PC GAMER BUENOS AIRES</div>
+            <div class="flex gap-10 opacity-50 uppercase text-[10px] tracking-[4px]">
+                <span>Overclocking</span>
+                <span>RGB Sync</span>
+                <span>Watercooling</span>
+            </div>
+            <a href="https://wa.me/573122547162" class="text-[--neon-blue] font-bold">CONTACT_SUPPORT: 3122547162</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- BIOS LOADER LOGIC ---
+        const logs = [
+            "Initializing PC GAMER BUENOS AIRES...",
+            "Checking Hardware Compatibility...",
+            "Loading RTX 4090 Drivers...",
+            "Optimizing VRAM usage...",
+            "Synchronizing RGB Lighting...",
+            "Overclocking CPU to 5.8GHz...",
+            "System Ready. Welcome, User."
+        ];
+        
+        let logIdx = 0;
+        const container = document.getElementById('log-container');
+        const bar = document.getElementById('boot-progress');
+
+        function addLog() {
+            if(logIdx < logs.length) {
+                const p = document.createElement('p');
+                p.textContent = "> " + logs[logIdx];
+                container.appendChild(p);
+                logIdx++;
+                bar.style.width = (logIdx / logs.length * 100) + '%';
+                setTimeout(addLog, 400);
+            } else {
+                setTimeout(() => {
+                    gsap.to('#loader', { opacity: 0, duration: 1, display: 'none' });
+                    initAnimations();
+                }, 800);
+            }
+        }
+        addLog();
+
+        // --- CURSOR LOGIC ---
+        document.addEventListener('mousemove', (e) => {
+            gsap.to('#cursor', { x: e.clientX - 7, y: e.clientY - 7, duration: 0.1 });
+        });
+
+        // --- BACKGROUND LOGIC (THREE.JS) ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true });
+        const torus = new THREE.Mesh(geometry, material);
+        scene.add(torus);
+        camera.position.z = 30;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            torus.rotation.x += 0.01;
+            torus.rotation.y += 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        function initAnimations() {
+            gsap.from("#hero-title", { opacity: 0, scale: 0.8, duration: 1.5, ease: "back.out(1.7)" });
+        }
+    </script>
+</body>
+</html>
