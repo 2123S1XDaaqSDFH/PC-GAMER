@@ -1,391 +1,216 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Gamer Buenos Aires | Dev Environment</title>
+    <title>PC GAMER BUENOS AIRES |ALTO RENDIMIENTO</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* --- VARIABLES DE COLOR (Tomadas de la imagen) --- */
         :root {
-            --cyan-primary: #00ffff;
-            --cyan-glow: rgba(0, 255, 255, 0.4);
-            --dark-bg: #030305;
-            --dark-soft: #0a0a0c;
-            --wood-tone: #3d2a1c; /* Tono nogal oscuro */
-            --cream: #f4f4f0;
+            --wd-blue: #00ffff;
+            --wd-purple: #bc13fe;
+            --wd-red: #ff003c;
+            --bg-dark: #010103;
         }
 
-        /* --- ESTILOS GENERALES --- */
-        * { cursor: crosshair; } /* Cursor tipo 'hack' */
-        body {
-            background-color: #000; /* Fondo negro puro fuera de los monitores */
-            color: var(--cream);
-            font-family: 'Share Tech Mono', monospace;
-            margin: 0;
-            overflow: hidden; /* Evita scroll en el entorno emulado */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        * { cursor: none !important; }
+        body { background-color: var(--bg-dark); color: white; font-family: 'Share Tech Mono', monospace; overflow: hidden; }
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+
+        /* --- LOADER CON VIDEO DEL PERRO --- */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: all 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        /* --- EMULACIÓN DEL ENTORNO DE ESCRITORIO --- */
-        #desk-environment {
+        #dog-video-container {
+            width: 400px; /* Ajusta según el tamaño de tu video */
+            max-width: 90vw;
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--dark-bg);
-            background-image: 
-                linear-gradient(to bottom, transparent 80%, rgba(61, 42, 28, 0.3) 100%), /* Madera abajo */
-                linear-gradient(to right, rgba(0, 255, 255, 0.05) 1px, transparent 1px), /* Grid */
-                linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 50px 50px, 50px 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px; /* Espacio entre 'monitores' */
-            padding: 40px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px var(--wd-blue));
+            transition: transform 0.8s cubic-bezier(0.9, 0, 0.1, 1);
         }
 
-        /* Estilo base para los 'Monitores Curvos' */
-        .monitor {
-            background-color: #000;
-            border: 2px solid #1a1a1c;
-            border-radius: 15px; /* Curvatura */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(0, 255, 255, 0.05);
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
+        #dog-video { width: 100%; height: auto; display: block; }
+
+        .load-track { width: 250px; height: 1px; background: rgba(0, 255, 255, 0.1); position: relative; }
+        .load-bar { position: absolute; left: 0; top: 0; height: 100%; background: var(--wd-blue); width: 0%; transition: width 0.2s; }
+
+        /* Efecto de zoom final */
+        .loader-zoom-out { transform: scale(100) !important; opacity: 0; }
+
+        /* --- CURSOR Y ESTÉTICA --- */
+        #cursor {
+            width: 20px; height: 20px; border: 1px solid var(--wd-blue);
+            position: fixed; pointer-events: none; z-index: 11000;
+            display: flex; justify-content: center; align-items: center;
+        }
+        #cursor::after { content: ''; width: 4px; height: 4px; background: var(--wd-blue); }
+
+        .glitch-hover:hover { animation: text-glitch 0.3s infinite; }
+        @keyframes text-glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); color: var(--wd-purple); }
+            40% { transform: translate(2px, -2px); color: var(--wd-blue); }
+            100% { transform: translate(0); }
         }
 
-        /* Resplandor Cyan de fondo (Neon strips en la pared) */
-        #desk-environment::before {
-            content: '';
-            position: absolute;
-            top: 10%; left: 50%;
-            width: 80%; height: 2px;
-            background-color: var(--cyan-primary);
-            transform: translateX(-50%);
-            box-shadow: 0 0 20px var(--cyan-glow);
-            z-index: 0;
+        .ws-float {
+            position: fixed; bottom: 40px; right: 40px;
+            width: 70px; height: 70px;
+            background: #25D366; color: white;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 35px; z-index: 9000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            animation: ws-pulse 2s infinite;
+        }
+        @keyframes ws-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
 
-        /* --- MONITOR IZQUIERDO: CÓDIGO --- */
-        #monitor-left {
-            width: 25%;
-            height: 85%;
-            padding: 20px;
-            font-size: 11px;
-            color: #d4d4d4;
-            opacity: 0.7;
-        }
-        #monitor-left .keyword { color: #569cd6; }
-        #monitor-left .string { color: #ce9178; }
-        #monitor-left .comment { color: #6a9955; }
-        #monitor-left .function { color: #dcdcaa; }
-
-        /* --- MONITOR CENTRAL: EL LOADER (Foco principal) --- */
-        #monitor-center {
-            width: 45%;
-            height: 90%;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-        }
-
-        /* El perro Pitbull ASCII (Diseñado a mano basándome en la imagen) */
-        #pitbull-ascii {
-            color: var(--cream);
-            font-size: 12px;
-            line-height: 12px;
-            white-space: pre;
-            text-align: center;
-            margin-bottom: 40px;
-            filter: drop-shadow(0 0 5px var(--cyan-glow));
-            transform: scale(1.2); /* Un poco más grande */
-        }
-
-        /* Barra de Progreso y Escaneo */
-        #loading-container {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        #loading-bar-track {
-            width: 100%;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #loading-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ffff, #00ffaa);
-            width: 0%; /* Controlado por JS */
-            border-radius: 3px;
-            box-shadow: 0 0 15px var(--cyan-glow);
-            transition: width 0.1s linear;
-        }
-
-        /* Cyan scan line (Binary code glow effect) */
-        #scan-line {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: rgba(0, 255, 255, 0.1);
-            color: rgba(0, 255, 255, 0.2);
-            font-size: 8px;
-            line-height: 1px;
-            white-space: nowrap;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        /* Textos de estado y soporte (Exactamente como la imagen) */
-        #scanning-text {
-            color: var(--cyan-primary);
-            font-size: 14px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            filter: drop-shadow(0 0 5px var(--cyan-glow));
-        }
-
-        #support-text {
-            color: var(--cyan-primary);
-            font-size: 12px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        #support-text i { font-size: 16px; color: #fff; }
-
-        /* --- MONITOR DERECHO: WEB PREVIEW --- */
-        #monitor-right {
-            width: 30%;
-            height: 85%;
-            display: flex;
-            flex-direction: column;
-        }
-        /* Header simulado de la web */
-        #monitor-right header {
-            background-color: #111;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-        }
-        #monitor-right .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; }
-        
-        /* Contenido simulado (La PC Gamer) */
-        #monitor-right .content {
-            flex-grow: 1;
-            background-image: url('https://i.ibb.co/X3P5YfH/pc-gamer-preview.png'); /* Imagen de una PC gamer */
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-        }
-        #monitor-right h3 { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: #fff; }
-        #monitor-right p { font-size: 12px; color: #aaa; max-w-xs; }
-
-        /* --- EL TECLADO MECÁNICO (cian/blanco) --- */
-        #keyboard-emulation {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 500px;
-            height: 150px;
-            background-color: #1a1a1c;
-            border-radius: 10px;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(15, 1fr);
-            gap: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 10;
-        }
-        .key {
-            background-color: var(--cream);
-            border-radius: 4px;
-            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2);
-            transition: all 0.1s;
-        }
-        /* Teclas Cian */
-        .key.cyan { background-color: #00cccc; }
-        /* Efecto de presionar */
-        .key.active { transform: translateY(2px); box-shadow: inset 0 1px 0 rgba(0,0,0,0.2); }
-
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
     </style>
 </head>
 <body>
 
-    <div id="desk-environment">
-        
-        <div class="monitor" id="monitor-left">
-            <div class="function">init_Joex_Core()</div> {
-                <span class="keyword">let</span> status = <span class="string">'Establishing Secure Connection'</span>;
-                console.<span class="keyword">log</span>(status);
-                
-                <span class="comment">// Cargar módulos de Élite</span>
-                <span class="keyword">import</span> { Advanced_SEO } from <span class="string">'./SEO_Module'</span>;
-                <span class="keyword">import</span> { Luxury_UI_UX } from <span class="string">'./UX_Architecture'</span>;
-                <span class="keyword">import</span> { Conversion_Psychology } from <span class="string">'./NeuroSales'</span>;
-                
-                <span class="function">load_GamerBuenosAires()</span>;
-            }
-            <br>
-            <div class="function">load_GamerBuenosAires()</div> {
-                <span class="keyword">const</span> targetNum = <span class="function">3122547162</span>;
-                <span class="keyword">let</span> progress = 0;
-                
-                <span class="keyword">while</span> (progress < 100) {
-                    <span class="function">run_Guardian_Unit()</span>;
-                }
-            }
+    <div id="loader">
+        <div id="dog-video-container">
+            <video id="dog-video" autoplay loop muted playsinline>
+                <source src="dog_glitch.mp4" type="video/mp4">
+                TU NAVEGADOR NO SOPORTA VIDEO
+            </video>
         </div>
-
-        <div class="monitor" id="monitor-center">
-            
-            <div id="pitbull-ascii">
-      __      _
-     /  \    / \
-    /    \__/   \
-   |  /|      |\ |
-   |  \|  __  |/ |
-    \__  /  \  __/
-       \ \__/ /
-        \____/
- [ GUARDIAN_UNIT_ACTIVE ]
-            </div>
-
-            <div id="loading-container">
-                <div id="loading-bar-track">
-                    <div id="loading-bar-fill"></div>
-                    <div id="scan-line">
-                        010111010011001010101011010010101010110100110010101010110100101010101101001100101010101101001010
-                    </div>
-                </div>
-                
-                <div id="scanning-text">SCANNING FOR INTRUDERS...</div>
-                
-                <div id="support-text">
-                    CONTACT_SUPPORT: 3122547162 <i class="fa-brands fa-whatsapp"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="monitor" id="monitor-right">
-            <header>
-                <div class="logo">PC GAME <span style="color:var(--cyan-primary)">Buenos Aires</span></div>
-                <div style="font-size:8px; opacity:0.5; text-transform:uppercase;">[ADMIN PANEL]</div>
-            </header>
-            <div class="content">
-                <h3>HARDWARE SUPERIOR.</h3>
-                <p>Buenos Aires Exclusive. Ecosistemas digitales de alto rendimiento configurados por JOEX.</p>
-                <div style="font-size:10px; color:var(--cyan-primary); margin-top:10px;">> CONSULTAR STOCK</div>
-            </div>
-        </div>
-
-        <div id="keyboard-emulation">
-            </div>
-
+        <div class="load-track"><div class="load-bar" id="load-bar"></div></div>
+        <div class="mt-8 text-[10px] tracking-[6px] uppercase opacity-60" id="status-text">REVISANDO INTRUSOS...</div>
+        <div class="mt-2 text-[9px] text-[--wd-blue] opacity-40">CONTACT_SUPPORT: 3122547162</div>
     </div>
 
+    <div id="cursor"></div>
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="fixed w-full z-[500] py-8 px-12 flex justify-between items-center backdrop-blur-lg border-b border-white/5">
+        <div class="text-3xl font-black uppercase glitch-hover">
+            PC GAMER <span class="text-[--wd-blue]">BUENOS AIRES</span>
+        </div>
+        <div class="hidden md:flex space-x-12 text-[10px] tracking-[4px] uppercase items-center">
+            <a href="#builds" class="hover:text-[--wd-blue] transition">Máquinas</a>
+            <a href="https://wa.me/573122547162" target="_blank" class="border border-white/20 px-8 py-3 rounded-full text-xs font-bold hover:bg-white hover:text-black transition">
+                WhatsApp_Concierge
+            </a>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24">
+        <p class="text-[11px] uppercase tracking-[1em] text-[--wd-blue] mb-12">Legacy of High Performance</p>
+        <h1 class="text-6xl md:text-[8vw] font-black leading-none mb-14 glitch-hover uppercase">Superioridad <br> Digital.</h1>
+        <p class="max-w-3xl text-gray-400 text-xl mb-16 font-light">
+            Ecosistemas digitales de alto rendimiento configurados por expertos.
+        </p>
+        <a href="#builds" class="bg-white text-black px-12 py-5 text-xs tracking-[0.4em] uppercase font-black hover:bg-[--wd-blue] transition duration-500">
+            Explorar builds
+        </a>
+    </section>
+
+    <section id="builds" class="py-32 container mx-auto px-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/5">
+            <div class="p-16 border border-white/5 relative group hover:bg-white/5 transition">
+                <span class="text-[--wd-blue] text-xs mb-6 block">01 // PRO</span>
+                <h3 class="text-2xl font-bold mb-4">RTX 4090 Build</h3>
+                <p class="text-gray-500 text-sm mb-8 uppercase">Ultra High End / Ryzen 9</p>
+                <a href="https://wa.me/573122547162" class="text-[10px] tracking-widest hover:text-[--wd-blue]">COTIZAR +</a>
+            </div>
+            <div class="p-16 border border-white/5 relative group hover:bg-white/5 transition">
+                <span class="text-[--wd-blue] text-xs mb-6 block">02 // CREADOR</span>
+                <h3 class="text-2xl font-bold mb-4">RTX 4080 Build</h3>
+                <p class="text-gray-500 text-sm mb-8 uppercase">Streaming / Core i7</p>
+                <a href="https://wa.me/573122547162" class="text-[10px] tracking-widest hover:text-[--wd-blue]">COTIZAR +</a>
+            </div>
+            <div class="p-16 border border-white/5 relative group hover:bg-white/5 transition">
+                <span class="text-[--wd-blue] text-xs mb-6 block">03 // ENTRADA</span>
+                <h3 class="text-2xl font-bold mb-4">RTX 4060 Build</h3>
+                <p class="text-gray-500 text-sm mb-8 uppercase">1080p Master / Core i5</p>
+                <a href="https://wa.me/573122547162" class="text-[10px] tracking-widest hover:text-[--wd-blue]">COTIZAR +</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center opacity-30 text-[9px] tracking-[4px] uppercase">
+        © 2026 PCGBA PRIVATE FIRM • DISCRECIÓN GARANTIZADA
+    </footer>
+
+    <a href="https://wa.me/573122547162" target="_blank" class="ws-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
     <script>
-        // 1. Lógica del Loader y Barra de Progreso
-        const barFill = document.getElementById('loading-bar-fill');
-        const statusText = document.getElementById('status-text');
-        
-        let progress = 0;
-        
-        // Simulación de carga DedSec-style
-        const interval = setInterval(() => {
-            // Incremento aleatorio para más realismo
-            progress += Math.random() * 5;
-            
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                
-                // Efecto de parpadeo de "Carga Completa"
-                setTimeout(() => {
-                    barFill.style.boxShadow = '0 0 30px #00ffaa';
-                    // Aquí podrías redirigir o mostrar el sitio web real
-                }, 500);
-            }
-            
-            barFill.style.width = progress + '%';
-            
-        }, 150); // Velocidad de actualización
+        // 1. LOADER CON VIDEO LOGIC
+        window.addEventListener('load', () => {
+            let prog = 0;
+            const bar = document.getElementById('load-bar');
+            const dogContainer = document.getElementById('dog-video-container');
+            const status = document.getElementById('status-text');
 
-        // 2. Generación y Animación del Teclado
-        const keyboard = document.getElementById('keyboard-emulation');
-        const keysConfig = [
-            'ESC', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'PRT', 'DEL',
-            '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'BACK', 'INS',
-            'TAB', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'PGU',
-            'CAPS', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'ENTER', 'PGD',
-            'SHFT', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'SHFT', 'UP', 'END',
-            'CTRL', 'WIN', 'ALT', 'SPACE', 'ALT', 'FN', 'CTRL', 'LEFT', 'DOWN', 'RIGHT'
-        ];
+            const interval = setInterval(() => {
+                prog += Math.random() * 7;
+                if(prog > 100) prog = 100;
+                bar.style.width = prog + '%';
 
-        keysConfig.forEach((keyName, index) => {
-            const key = document.createElement('div');
-            key.className = 'key';
-            
-            // Asignar colores Cian/Blanco de la imagen
-            if (['ESC', 'CAPS', 'ENTER', 'SHFT', 'CTRL', 'ALT', 'SPACE'].includes(keyName) || (index > 60)) {
-                key.classList.add('cyan');
-            }
-            
-            // Especial para la barra espaciadora
-            if (keyName === 'SPACE') {
-                key.style.gridColumn = 'span 5';
-            }
+                if(prog === 100) {
+                    clearInterval(interval);
+                    status.innerText = "ACCESO TOTAL CONCEDIDO";
+                    status.style.color = "#00ffff";
 
-            key.dataset.key = keyName;
-            keyboard.appendChild(key);
+                    // --- JUMP SCARE (EL PERRO TE COME) ---
+                    setTimeout(() => {
+                        dogContainer.classList.add('loader-zoom-out');
+                        document.getElementById('loader').style.backgroundColor = 'transparent';
+
+                        setTimeout(() => {
+                            gsap.to('#loader', { opacity: 0, duration: 0.5, display: 'none' });
+                            document.body.style.overflow = "auto";
+                        }, 500);
+                    }, 1000);
+                }
+            }, 120);
         });
 
-        // Simulación de escritura aleatoria
-        const keys = document.querySelectorAll('.key');
-        setInterval(() => {
-            const randomKey = keys[Math.floor(Math.random() * keys.length)];
-            randomKey.classList.add('active');
-            setTimeout(() => randomKey.classList.remove('active'), 100);
-        }, 300); // Frecuencia de "tecleo"
-
-        // Redimensionar Canvas al cambiar tamaño de ventana
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        // 2. CURSOR
+        document.addEventListener('mousemove', (e) => {
+            gsap.to('#cursor', { x: e.clientX - 10, y: e.clientY - 10, duration: 0.1 });
         });
-        
-    </script>
-</body>
-</html>
+
+        // 3. BACKGROUND (Three.js)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const starGeo = new THREE.BufferGeometry();
+        const starCount = 3000;
+        const starPos = new Float32Array(starCount * 3);
+        for(let i=0; i<starCount*3; i++) starPos[i] = (Math.random() - 0.5) * 2000;
+        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0x00ffff, size: 1 }));
+        scene.add(stars);
+        camera.position.z = 800;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            stars.rotation.y += 0.0005;
+            renderer.render(scene, camera);
         }
         animate();
     </script>
