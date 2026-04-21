@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!D<!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC GAMER BUENOS AIRES | Elite Hardware</title>
+    <title>PC GAMER BUENOS AIRES | Hardware de Élite</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -14,32 +14,31 @@
     <style>
         :root {
             --neon-blue: #00f2ff;
-            --neon-purple: #bc13fe;
             --neon-red: #ff003c;
             --bg-dark: #020205;
         }
 
         * { cursor: none !important; }
-        body { background-color: var(--bg-dark); color: #ffffff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
+        body { background-color: var(--bg-dark); color: #ffffff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
         h1, h2, h3, .font-gamer { font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
 
-        /* --- LOADER FULL SCREEN & BREAK --- */
+        /* LOADER FULL SCREEN */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         #loader-video {
             position: absolute; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0.6; filter: contrast(1.2) brightness(0.8);
+            object-fit: cover; opacity: 0.6;
         }
-        .fracture-effect { animation: fracture 0.2s infinite; filter: invert(1) hue-rotate(180deg) !important; }
+        .fracture-effect { animation: fracture 0.2s infinite; filter: invert(1) !important; }
         @keyframes fracture {
-            0% { transform: translate(2px, -2px) scale(1.01); }
-            50% { transform: translate(-2px, 2px) scale(0.99); }
+            0% { transform: translate(2px, -2px); }
+            50% { transform: translate(-2px, 2px); }
             100% { transform: translate(0); }
         }
 
-        /* --- BOTÓN COMPRAR PULSO ROJO --- */
+        /* BOTÓN COMPRAR PULSO ROJO */
         .btn-buy-pulse {
             background: var(--neon-red);
             color: white;
@@ -49,20 +48,8 @@
         }
         @keyframes pulse-red {
             0% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 0, 60, 0); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 60, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }
-        }
-
-        /* --- GLITCH & ASCII EFFECT --- */
-        .glitch-text:hover {
-            animation: glitch 0.3s infinite;
-            text-shadow: 2px 0 var(--neon-red), -2px 0 var(--neon-blue);
-            font-family: monospace;
-        }
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            100% { transform: translate(3px, -3px); }
         }
 
         .cyber-card {
@@ -70,7 +57,7 @@
             clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
             transition: 0.4s;
         }
-        .cyber-card:hover { border-color: var(--neon-blue); transform: translateY(-10px); }
+        .cyber-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); }
 
         #cursor { width: 20px; height: 20px; border: 2px solid var(--neon-blue); position: fixed; pointer-events: none; z-index: 10000; transform: rotate(45deg); mix-blend-mode: difference; }
     </style>
@@ -81,9 +68,9 @@
 
     <div id="loader">
         <video id="loader-video" autoplay loop muted playsinline><source src="dog_glitch.mp4" type="video/mp4"></video>
-        <div class="z-10 w-full max-w-lg p-8 bg-black/60 backdrop-blur-md border border-cyan-500/20">
+        <div class="z-10 w-full max-w-lg p-8 bg-black/60 border border-cyan-500/20">
             <div id="log-container" class="font-mono text-cyan-400 text-xs h-24 overflow-hidden mb-4"></div>
-            <div class="h-1 bg-white/10 w-full relative"><div id="boot-progress" class="h-full bg-cyan-500 w-0"></div></div>
+            <div class="h-1 bg-white/10 w-full"><div id="boot-progress" class="h-full bg-cyan-500 w-0"></div></div>
         </div>
     </div>
 
@@ -95,8 +82,7 @@
             <div class="text-xl font-black font-gamer tracking-tighter">PC GAMER <span class="text-cyan-400">BUENOS AIRES</span></div>
             <div class="hidden lg:flex space-x-6 items-center text-[9px] font-bold uppercase tracking-[2px]">
                 <a href="#builds" class="hover:text-cyan-400 transition">PC PREFABRICADAS</a>
-                <a href="#componentes" class="hover:text-cyan-400 transition">COMPONENTES</a>
-                <a href="#ofertas" class="hover:text-cyan-400 transition">OFERTAS</a>
+                <a href="#cat-componentes" class="hover:text-cyan-400 transition">COMPONENTES</a>
                 <a href="#reviews" class="hover:text-cyan-400 transition">RESEÑAS</a>
                 <a href="https://wa.me/573122547162" class="px-4 py-2 border border-purple-500 hover:bg-purple-500 transition text-white">CONTACTA UN ASESOR</a>
             </div>
@@ -104,150 +90,170 @@
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24">
-        <h2 class="text-cyan-400 font-gamer text-[10px] mb-6 tracking-[12px]">DOMINACIÓN DIGITAL</h2>
-        <h1 class="text-5xl md:text-[8vw] font-black leading-none mb-8 font-gamer">
-            MÁXIMO <br> <span class="glitch-text text-white cursor-pointer">RENDIMIENTO.</span>
-        </h1>
-        <p class="text-gray-500 text-xs tracking-[5px] uppercase mb-12">Sin punto físico // Envíos a toda Colombia</p>
-        
-        <div class="w-full max-w-5xl aspect-video cyber-card overflow-hidden shadow-2xl">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/1VX4k0ihU8M?start=18&autoplay=1&mute=1&loop=1&playlist=1VX4k0ihU8M&controls=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <h1 class="text-5xl md:text-[8vw] font-black leading-none mb-8 font-gamer">MÁXIMO RENDIMIENTO.</h1>
+        <div class="w-full max-w-5xl aspect-video cyber-card overflow-hidden">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/1VX4k0ihU8M?start=18&autoplay=1&mute=1&loop=1&playlist=1VX4k0ihU8M&controls=0" frameborder="0"></iframe>
         </div>
     </section>
 
-    <section id="builds" class="py-32 container mx-auto px-6">
-        <h2 class="font-gamer text-4xl mb-16 text-center text-cyan-400">PC PREFABRICADAS</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            
-            <div class="cyber-card p-6 flex flex-col">
-                <div class="h-40 bg-white/5 mb-4 flex items-center justify-center"><i class="fa-solid fa-bolt text-4xl text-cyan-500"></i></div>
-                <h3 class="text-sm font-gamer mb-2">Pro Gamer v1</h3>
-                <p class="text-[10px] text-gray-400 flex-grow">RTX 4060 Ti 8GB<br>Ryzen 5 7600<br>16GB DDR5 5200MHz<br>1TB NVMe Gen4</p>
-                <div class="mt-4 pt-4 border-t border-white/5 text-center">
-                    <div class="text-cyan-400 font-bold text-lg mb-4">$4.850.000</div>
-                    <a href="https://wa.me/573122547162?text=Deseo comprar la Pro Gamer v1" class="btn-buy-pulse block w-full py-2 text-xs">COMPRAR</a>
-                </div>
-            </div>
-
-            <div class="cyber-card p-6 flex flex-col">
-                <div class="h-40 bg-white/5 mb-4 flex items-center justify-center"><i class="fa-solid fa-dragon text-4xl text-purple-500"></i></div>
-                <h3 class="text-sm font-gamer mb-2">Shadow Beast</h3>
-                <p class="text-[10px] text-gray-400 flex-grow">RTX 4070 Super 12GB<br>Intel i7 14700K<br>32GB DDR5 6000MHz<br>2TB NVMe Gen4</p>
-                <div class="mt-4 pt-4 border-t border-white/5 text-center">
-                    <div class="text-cyan-400 font-bold text-lg mb-4">$8.900.000</div>
-                    <a href="https://wa.me/573122547162?text=Deseo comprar la Shadow Beast" class="btn-buy-pulse block w-full py-2 text-xs">COMPRAR</a>
-                </div>
-            </div>
-
-            <div class="cyber-card p-6 flex flex-col border-cyan-500/30 shadow-[0_0_20px_rgba(0,242,255,0.1)]">
-                <div class="h-40 bg-white/5 mb-4 flex items-center justify-center"><i class="fa-solid fa-crown text-4xl text-yellow-500"></i></div>
-                <h3 class="text-sm font-gamer mb-2">Mythic God</h3>
-                <p class="text-[10px] text-gray-400 flex-grow">RTX 4090 24GB<br>Ryzen 9 7950X3D<br>64GB DDR5 6400MHz<br>4TB NVMe Gen5</p>
-                <div class="mt-4 pt-4 border-t border-white/5 text-center">
-                    <div class="text-cyan-400 font-bold text-lg mb-4">$18.500.000</div>
-                    <a href="https://wa.me/573122547162?text=Deseo comprar la Mythic God" class="btn-buy-pulse block w-full py-2 text-xs">COMPRAR</a>
-                </div>
-            </div>
-
-            <div class="cyber-card p-6 flex flex-col">
-                <div class="h-40 bg-white/5 mb-4 flex items-center justify-center"><i class="fa-solid fa-ghost text-4xl text-blue-400"></i></div>
-                <h3 class="text-sm font-gamer mb-2">Stealth Ops</h3>
-                <p class="text-[10px] text-gray-400 flex-grow">RTX 4060 8GB<br>Ryzen 5 5600<br>16GB DDR4 3600MHz<br>500GB NVMe</p>
-                <div class="mt-4 pt-4 border-t border-white/5 text-center">
-                    <div class="text-cyan-400 font-bold text-lg mb-4">$3.650.000</div>
-                    <a href="https://wa.me/573122547162?text=Deseo comprar la Stealth Ops" class="btn-buy-pulse block w-full py-2 text-xs">COMPRAR</a>
-                </div>
-            </div>
-
-            <div class="cyber-card p-6 flex flex-col">
-                <div class="h-40 bg-white/5 mb-4 flex items-center justify-center"><i class="fa-solid fa-fire text-4xl text-orange-500"></i></div>
-                <h3 class="text-sm font-gamer mb-2">Streamer Pro</h3>
-                <p class="text-[10px] text-gray-400 flex-grow">RTX 4070 Ti 12GB<br>Intel i5 13600K<br>32GB DDR5 5600MHz<br>1TB NVMe</p>
-                <div class="mt-4 pt-4 border-t border-white/5 text-center">
-                    <div class="text-cyan-400 font-bold text-lg mb-4">$7.200.000</div>
-                    <a href="https://wa.me/573122547162?text=Deseo comprar la Streamer Pro" class="btn-buy-pulse block w-full py-2 text-xs">COMPRAR</a>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="componentes" class="py-32 bg-white/5">
-        <div class="container mx-auto px-6">
-            <h2 class="font-gamer text-3xl mb-16 text-center">Catálogo de Componentes</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="text-center p-8 border border-white/5 hover:border-cyan-500 transition">
-                    <i class="fa-solid fa-microchip text-5xl mb-4 text-cyan-400"></i>
-                    <h4 class="font-gamer text-sm">CPUs & GPUs</h4>
-                </div>
-                <div class="text-center p-8 border border-white/5 hover:border-cyan-500 transition">
-                    <i class="fa-solid fa-memory text-5xl mb-4 text-cyan-400"></i>
-                    <h4 class="font-gamer text-sm">RAM DDR4/DDR5</h4>
-                </div>
-                <div class="text-center p-8 border border-white/5 hover:border-cyan-500 transition">
-                    <i class="fa-solid fa-box text-5xl mb-4 text-cyan-400"></i>
-                    <h4 class="font-gamer text-sm">Chasis & Fuentes</h4>
-                </div>
-                <div class="text-center p-8 border border-white/5 hover:border-cyan-500 transition">
-                    <i class="fa-solid fa-snowflake text-5xl mb-4 text-cyan-400"></i>
-                    <h4 class="font-gamer text-sm">Refrigeración</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="reviews" class="py-32 container mx-auto px-6 text-center">
-        <h2 class="font-gamer text-3xl mb-16">Gente que ya compró</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <section id="builds" class="py-20 container mx-auto px-6">
+        <h2 class="font-gamer text-3xl mb-12 text-center text-cyan-400">PC PREFABRICADAS</h2>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div class="cyber-card p-4">
-                <div class="h-64 bg-gray-800 mb-4 overflow-hidden">
-                    <div class="w-full h-full flex items-center justify-center opacity-20 italic">FOTO CLIENTE 1</div>
-                </div>
-                <p class="text-[10px] uppercase text-cyan-400 font-bold mb-2">@User_77</p>
-                <p class="text-[11px] text-gray-400 italic">"La mejor compra, el envío a Medellín fue súper rápido. ¡Máquina total!"</p>
+                <h3 class="text-sm font-gamer text-cyan-400">Pro Gamer v1</h3>
+                <p class="text-[10px] my-4 opacity-70">RTX 4060 Ti + Ryzen 5 7600<br>16GB DDR5 + 1TB NVMe</p>
+                <div class="text-lg font-bold mb-4">$4.850.000</div>
+                <a href="https://wa.me/573122547162" class="btn-buy-pulse block text-center py-2 text-[10px]">COMPRAR</a>
             </div>
             </div>
     </section>
 
-    <section class="py-32 max-w-2xl mx-auto px-6">
-        <div class="cyber-card p-10 bg-black/90">
-            <h2 class="font-gamer text-2xl mb-8 text-center text-cyan-400">Iniciar Pedido</h2>
+    <section id="cat-componentes" class="py-20 bg-white/5">
+        <div class="container mx-auto px-6">
+            <h2 class="font-gamer text-3xl mb-12 text-center">Catálogo de Componentes</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <a href="#sec-cpu" class="cyber-card p-8 text-center hover:bg-cyan-500/10">
+                    <i class="fa-solid fa-microchip text-4xl mb-4 text-cyan-400"></i>
+                    <h4 class="font-gamer text-xs">CPUs & GPUs</h4>
+                </a>
+                <a href="#sec-ram" class="cyber-card p-8 text-center hover:bg-cyan-500/10">
+                    <i class="fa-solid fa-memory text-4xl mb-4 text-cyan-400"></i>
+                    <h4 class="font-gamer text-xs">RAM DDR4/DDR5</h4>
+                </a>
+                <a href="#sec-chasis" class="cyber-card p-8 text-center hover:bg-cyan-500/10">
+                    <i class="fa-solid fa-box text-4xl mb-4 text-cyan-400"></i>
+                    <h4 class="font-gamer text-xs">Chasis & Fuentes</h4>
+                </a>
+                <a href="#sec-ref" class="cyber-card p-8 text-center hover:bg-cyan-500/10">
+                    <i class="fa-solid fa-snowflake text-4xl mb-4 text-cyan-400"></i>
+                    <h4 class="font-gamer text-xs">Refrigeración</h4>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-cpu" class="py-20 container mx-auto px-6">
+        <h3 class="font-gamer text-xl mb-8 text-cyan-400 border-l-4 border-cyan-400 pl-4">CPUs & GPUs</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white/5 p-4 border border-white/10">
+                <p class="text-xs font-bold">RTX 4070 SUPER</p>
+                <p class="text-cyan-400 text-sm">$3.450.000</p>
+                <a href="https://wa.me/573122547162" class="text-[9px] underline">COMPRAR</a>
+            </div>
+            </div>
+    </section>
+
+    <section id="sec-ram" class="py-20 bg-black/40 container mx-auto px-6">
+        <h3 class="font-gamer text-xl mb-8 text-cyan-400 border-l-4 border-cyan-400 pl-4">RAM DDR4/DDR5</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white/5 p-4 border border-white/10">
+                <p class="text-xs font-bold">CORSAIR VENGEANCE 32GB DDR5</p>
+                <p class="text-cyan-400 text-sm">$650.000</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="py-20 container mx-auto px-6">
+        <h2 class="font-gamer text-3xl mb-12 text-center">Gente que ya compró</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div class="cyber-card p-4 text-[11px]">
+                <div class="h-32 bg-gray-800 mb-2 flex items-center justify-center opacity-30 italic">FOTO CLIENTE</div>
+                <p class="text-cyan-400 font-bold">@Andres_Gomez88</p>
+                <p class="opacity-70">"El equipo vuela. En Cali me llegó en 2 días. Brutal el empaque."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <div class="h-32 bg-gray-800 mb-2 flex items-center justify-center opacity-30 italic">FOTO CLIENTE</div>
+                <p class="text-cyan-400 font-bold">@Carlos_Tech</p>
+                <p class="opacity-70">"Compré la 4060 Ti y el rendimiento en 1440p es justo lo que buscaba."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <div class="h-32 bg-gray-800 mb-2 flex items-center justify-center opacity-30 italic">FOTO CLIENTE</div>
+                <p class="text-cyan-400 font-bold">@JuanPa_Velez</p>
+                <p class="opacity-70">"Excelente asesoría en Medellín. No tienen local pero responden de una."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <div class="h-32 bg-gray-800 mb-2 flex items-center justify-center opacity-30 italic">FOTO CLIENTE</div>
+                <p class="text-cyan-400 font-bold">@MateoR_Hardware</p>
+                <p class="opacity-70">"La refrigeración líquida llegó perfecta a Bogotá. Muy confiables."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <div class="h-32 bg-gray-800 mb-2 flex items-center justify-center opacity-30 italic">FOTO CLIENTE</div>
+                <p class="text-cyan-400 font-bold">@Santi_PCMaster</p>
+                <p class="opacity-70">"Precios reales y hardware original. Mi setup quedó increíble."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Luisa_Gamer</p>
+                <p class="opacity-70">"Envío seguro a Bucaramanga. El PC llegó armado y listo para jugar."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Felipe_Antioquia</p>
+                <p class="opacity-70">"Súper recomendados en Rionegro. Rapidez y calidad total."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Dani_Stream</p>
+                <p class="opacity-70">"Gracias por el soporte para configurar mi OBS. Clientes de por vida."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Kevin_Builds</p>
+                <p class="opacity-70">"La fuente de poder Corsair llegó sellada. Todo 10/10."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Mauro_Sistemas</p>
+                <p class="opacity-70">"Compré componentes para mi empresa y el despacho a Barranquilla fue impecable."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Valentina_H</p>
+                <p class="opacity-70">"Mi primer PC gamer y no pudo ser mejor. La estética es perfecta."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Jose_L_Tecno</p>
+                <p class="opacity-70">"Desde Envigado comprando siempre aquí. Garantía real."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Ramiro_Gamer</p>
+                <p class="opacity-70">"El gabinete llegó sin un solo rasguño a Pereira. Gran trabajo."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Esteban_Dev</p>
+                <p class="opacity-70">"Potencia pura para programar y jugar. La mejor inversión."</p>
+            </div>
+            <div class="cyber-card p-4 text-[11px]">
+                <p class="text-cyan-400 font-bold">@Camila_G</p>
+                <p class="opacity-70">"Asesoría personalizada por WhatsApp, me ayudaron a elegir según mi presupuesto."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 max-w-2xl mx-auto px-6">
+        <div class="cyber-card p-10">
+            <h2 class="font-gamer text-xl mb-8 text-center text-cyan-400">Cotización Táctica</h2>
             <form id="wa-form" class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="name" placeholder="NOMBRE" class="bg-white/5 border border-white/10 p-4 text-[10px] focus:border-cyan-500 outline-none" required>
-                    <input type="text" id="lastname" placeholder="APELLIDO" class="bg-white/5 border border-white/10 p-4 text-[10px] focus:border-cyan-500 outline-none" required>
+                    <input type="text" id="name" placeholder="NOMBRE" class="bg-white/5 border border-white/10 p-3 text-xs outline-none">
+                    <input type="text" id="lastname" placeholder="APELLIDO" class="bg-white/5 border border-white/10 p-3 text-xs outline-none">
                 </div>
-                <input type="tel" id="phone" placeholder="TELÉFONO / WHATSAPP" class="w-full bg-white/5 border border-white/10 p-4 text-[10px] focus:border-cyan-500 outline-none" required>
-                <textarea id="msg" placeholder="¿EN QUÉ PODEMOS AYUDARTE?" class="w-full bg-white/5 border border-white/10 p-4 text-[10px] h-32 focus:border-cyan-500 outline-none" required></textarea>
+                <textarea id="msg" placeholder="MENSAJE" class="w-full bg-white/5 border border-white/10 p-3 text-xs h-32 outline-none"></textarea>
                 <button type="submit" class="w-full btn-buy-pulse py-4 font-bold">ENVIAR CONSULTA</button>
             </form>
         </div>
     </section>
 
-    <a href="https://wa.me/573122547162?text=Hola! Quiero asesoría profesional." class="fixed bottom-8 right-8 z-[1000] w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center text-3xl shadow-[0_0_20px_#25D366] hover:scale-110 transition">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
     <script>
-        // --- LÓGICA LOADER ---
-        const logs = ["BYPASSING FIREWALLS...", "OPTIMIZING GPU CORES...", "LOADING ELITE_HARDWARE...", "SYSTEM READY.", "AUTHENTICATING SYSTEM_ADMIN..."];
-        let logIdx = 0;
-        const logC = document.getElementById('log-container');
-        const pBar = document.getElementById('boot-progress');
+        // LOADER LOGIC
+        const logs = ["BYPASSING FIREWALL...", "LOADING ASSETS...", "OPTIMIZING GPU...", "ACCESS GRANTED."];
+        let idx = 0;
         const lVideo = document.getElementById('loader-video');
-
         function boot() {
-            if(logIdx < logs.length) {
+            if(idx < logs.length) {
                 const p = document.createElement('p');
-                p.textContent = ">> " + logs[logIdx];
-                logC.appendChild(p);
-                logIdx++;
-                pBar.style.width = (logIdx / logs.length * 100) + '%';
-                setTimeout(boot, 350); 
+                p.textContent = ">> " + logs[idx++];
+                document.getElementById('log-container').appendChild(p);
+                document.getElementById('boot-progress').style.width = (idx/logs.length*100)+'%';
+                setTimeout(boot, 400);
             } else {
                 lVideo.classList.add('fracture-effect');
                 setTimeout(() => {
-                    gsap.to('#loader', { scale: 3, opacity: 0, duration: 0.6, ease: "power2.in", onComplete: () => {
+                    gsap.to('#loader', { scale: 3, opacity: 0, duration: 0.5, onComplete: () => {
                         document.getElementById('loader').remove();
                         document.body.style.overflow = 'auto';
                     }});
@@ -256,30 +262,10 @@
         }
         boot();
 
-        // --- FORMULARIO ---
-        document.getElementById('wa-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const n = document.getElementById('name').value;
-            const l = document.getElementById('lastname').value;
-            const p = document.getElementById('phone').value;
-            const m = document.getElementById('msg').value;
-            const text = `Hola PC GAMER BUENOS AIRES, soy ${n} ${l}. Tel: ${p}. Mensaje: ${m}`;
-            window.open(`https://wa.me/573122547162?text=${encodeURIComponent(text)}`);
-        });
-
-        // --- CURSOR Y FONDO ---
+        // CURSOR
         document.addEventListener('mousemove', (e) => {
-            gsap.to('#cursor', { x: e.clientX - 10, y: e.clientY - 10, duration: 0.1 });
+            gsap.to('#cursor', { x: e.clientX-10, y: e.clientY-10, duration: 0.1 });
         });
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        const mesh = new THREE.Mesh(new THREE.TorusKnotGeometry(10, 3, 100, 16), new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.05 }));
-        scene.add(mesh); camera.position.z = 40;
-        function anim() { requestAnimationFrame(anim); mesh.rotation.y += 0.01; renderer.render(scene, camera); }
-        anim();
     </script>
 </body>
 </html>
